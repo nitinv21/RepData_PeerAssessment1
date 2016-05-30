@@ -1,17 +1,31 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 ## Loading and preprocessing the data
 
-```{r}
+
+```r
 library(ggplot2)
 library(dplyr)
+```
 
+```
+## 
+## Attaching package: 'dplyr'
+```
 
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
 #read activity.cs file
 activity<-read.csv("activity.csv",colClasses=c("integer","Date","integer"))
 
@@ -35,7 +49,11 @@ stepshist<-ggplot( StepsPerDay ,aes(x=SumSteps))+geom_histogram(fill="blue",colo
 #stepshist+scale_fill_gradient(low="blue", high="red")
 
 print(stepshist)  
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-1-1.png)
+
+```r
 #mean steps per day
 meanStepsPerDay<- mean( StepsPerDay$SumSteps, na.rm=TRUE)
 
@@ -45,11 +63,12 @@ medianStepsPerDay <- median( StepsPerDay$SumSteps , na.rm=TRUE)
 ```
 
 # What is mean total number of steps taken per day?
-The mean total number of steps taken per day is `r meanStepsPerDay ` .  The median number of steps taken per day is `r medianStepsPerDay `(NA's omitted).
+The mean total number of steps taken per day is 9354.2295082 .  The median number of steps taken per day is 10395(NA's omitted).
 
 
 ## What is the average daily activity pattern?
-```{r}
+
+```r
 dayline<-ggplot( StepsPerInterval ,aes(x=interval,y=MeanSteps ))+geom_line()+
   ggtitle("Average steps for each 5-min interval")+
   ylab("Mean steps")+
@@ -57,10 +76,13 @@ dayline<-ggplot( StepsPerInterval ,aes(x=interval,y=MeanSteps ))+geom_line()+
 print(dayline)
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)
+
 
 
 ## Imputing missing values
-```{r}
+
+```r
 MissiValues <-  nrow(activity)-sum(complete.cases(activity))
 
 
@@ -92,7 +114,8 @@ for(n in 1:nrow(activity)){
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r}
+
+```r
 WeekDays= c("Monday","Tuesday","Wednesday","Thursday","Friday")
 activity_fillsteps$weekday<-as.factor( ifelse(weekdays(activity$date)%in%WeekDays,"weekday","weekend"))
 
@@ -111,6 +134,7 @@ weekdayplot<-ggplot(StepsPerInterval.weekdaysplit,aes(x=interval,y=MeanSteps))+
   xlab("Interval number")
 
 print(weekdayplot)
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)
 
